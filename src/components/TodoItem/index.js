@@ -16,7 +16,6 @@ const StyledTodoItem = styled(TodoItem)`
   border: 1px solid #efefef;
   padding: 10px;
   height: 48px;
-  box-sizing: border-box;
   width: 600px;
   display: flex;
   align-items: center;
@@ -31,14 +30,21 @@ const StyledTodoItem = styled(TodoItem)`
       opacity: 0.3;
     `}
   }
+
+  &:hover span:last-child {
+    opacity: 1;
+  }
 `;
 
 const Cross = styled.span`
-  color: #999;
+  color: rgba(204, 0, 0, 0.5);
+  font-weight: bold;
   cursor: pointer;
   display: inline-block;
   text-align: center;
   width: 20px;
+  opacity: 0;
+  transition: all 0.3s linear;
 `;
 
 export default StyledTodoItem;

@@ -40,7 +40,6 @@ const StyledInput = styled(Input)`
   border: 1px solid #efefef;
   padding: 5px;
   height: 48px;
-  box-sizing: border-box;
   width: 600px;
 `;
 

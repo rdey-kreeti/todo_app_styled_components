@@ -350,6 +350,10 @@ const GlobalStyle = createGlobalStyle`
   [hidden] {
     display: none;
   }
+
+  * {
+    box-sizing: border-box;
+  }
 `;
 
 export default GlobalStyle;

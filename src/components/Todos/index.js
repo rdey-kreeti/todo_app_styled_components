@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import styled from 'styled-components';
 import Input from '../Input';
 import TodoItem from '../TodoItem';
-import TodosFooter from '../TodosFooter';
+import TodosHeader from '../TodosHeader';
 
 const Wrapper = styled.section`
   flex: 1 1 auto;
@@ -10,6 +10,11 @@ const Wrapper = styled.section`
   flex-direction: column;
   align-items: center;
   padding: 25px;
+  overflow-y: auto;
+
+  input {
+    flex: 0 0 auto;
+  }
 `;
 
 const TodosWrapper = styled.ul`
@@ -24,7 +29,7 @@ class Todos extends Component {
 
     this.state = {
       todos: [],
-      copiedTodos: []
+      activeFilter: 'all'
     }
   }
 
@@ -57,30 +62,36 @@ class Todos extends Component {
     this.setState({todos});
   }
 
-  filterTodosByType = (type) => {
-    const {todos, copiedTodos} = this.state;
+  filterTodosByType = () => {
+    const {todos, activeFilter} = this.state;
     let filteredTodos = [];
-    if(copiedTodos.length === 0) {
-      filteredTodos = todos.filter(el => el.status === type);
+
+    if(activeFilter === 'all') {
+      filteredTodos = todos;
     } else {
-      filteredTodos = copiedTodos.filter(el => el.status === type);
+      filteredTodos = todos.filter(el => el.status === activeFilter);
     }
-    this.setState({copiedTodos: todos, todos: filteredTodos});
+
+    return filteredTodos;
+  }
+
+  setActiveFilter = (type) => {
+    this.setState({activeFilter: type});
   }
 
   render() {
-    console.log(this.state.todos, this.state.copiedTodos);
-    const {todos} = this.state;
-    const todosCount = todos.filter(el => el.status === 'active').length;
+    const filteredTodos = this.filterTodosByType();
+    const todosCount = filteredTodos.filter(el => el.status === 'active').length;
+
     return (
       <Wrapper>
+        <TodosHeader activeFilterStatus={this.state.activeFilter} todosFilter={this.setActiveFilter} count={todosCount}/>
         <Input type="text" handleUserInput={this.handleCreateTodo}/>
         <TodosWrapper>
-          {this.state.todos.map((el,i) => (
+          {filteredTodos.map((el,i) => (
             <TodoItem key={i} data={el} handleDone={this.markTodoDone} handleDelete={this.handleDeleteTodo}/>
           ))}
         </TodosWrapper>
-        <TodosFooter todosFilter={this.filterTodosByType} count={todosCount}/>
       </Wrapper>
     )
   }
